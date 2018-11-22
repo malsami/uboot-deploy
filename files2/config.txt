@@ -1,0 +1,4 @@
+kernel=u-boot.bin
+enable_uart=1
+init_uart_baud=115200
+init_uart_clock=3000000 # this line is important
