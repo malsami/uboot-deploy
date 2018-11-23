@@ -1,4 +1,10 @@
+# set cpu into 64 bit mode
+arm_64bit=1                  # otherwise u-boot in 64 bit mode doesn't work
+
+# use u-boot as bootloader
 kernel=u-boot.bin
+
+# configure uart in such a way, that it works with fiasco.oc/genode
 enable_uart=1
 init_uart_baud=115200
-init_uart_clock=3000000 # this line is important
+init_uart_clock=3000000      # setting the clock is important
