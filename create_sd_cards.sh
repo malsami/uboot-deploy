@@ -25,6 +25,10 @@ if [ -z "$5" ];
 then
 	echo -e "\e[33m WARN:\e[0m No fifth parameter defined,\n \e[32m initializing MAC addresses with 1! \e[0m";
 fi
+if [ -z "$6" ];
+then
+	echo -e "\e[33m WARN:\e[0m No sixth parameter defined,\n \e[32m ending loop of MAC addresses with 20! \e[0m";
+fi
 
 
 #installing necessary dependencies
@@ -33,7 +37,8 @@ sudo apt update && sudo apt install make gcc bison flex xz-utils -yy
 
 
 DIRECTORY="./u-boot"
-if [ ! -d "$DIRECTORY" ]; then
+if [ ! -d "$DIRECTORY" ]
+then
 #Cloning u-boot from repository
 echo -e "\e[33m Cloning GIT-Repository... \e[0m"
 git clone git://git.denx.de/u-boot.git
@@ -46,8 +51,14 @@ cd u-boot
 
 #get the latest version from https://releases.linaro.org/components/toolchain/binaries/
 echo -e "\e[35m... Please ensure you are using the latest linaro toolchain for CROSS_COMPILE ...\e[0m"
+
+#Downloading Toolchain for 32 bit RPi2
 wget https://releases.linaro.org/components/toolchain/binaries/latest-7/arm-eabi/gcc-linaro-7.3.1-2018.05-x86_64_arm-eabi.tar.xz
 tar xf gcc-linaro-7.3.1-2018.05-x86_64_arm-eabi.tar.xz
+#Downloading Toolchain for 64 bit RPi3
+wget https://releases.linaro.org/components/toolchain/binaries/latest-7/aarch64-elf/gcc-linaro-7.3.1-2018.05-x86_64_aarch64-elf.tar.xz
+tar xf gcc-linaro-7.3.1-2018.05-x86_64_aarch64-elf.tar.xz
+
 else
  echo -e "\e[31mDirectory exists, please delete first, if you have problems with u-boot or linaro toolchain...\e[0m \n Continuing to compile!";
  cd u-boot
@@ -60,9 +71,9 @@ git checkout v2018.11
 if [ "$1" == '3' ]
 then
 	#Raspberry Pi 3 config
-	CROSS_COMPILE=`pwd`/gcc-linaro-7.3.1-2018.05-x86_64_arm-eabi/bin/arm-eabi- make O=build_rpi3 rpi_3_defconfig
-	CROSS_COMPILE=`pwd`/gcc-linaro-7.3.1-2018.05-x86_64_arm-eabi/bin/arm-eabi- make O=build_rpi3 -j
-	CROSS_COMPILE=`pwd`/gcc-linaro-7.3.1-2018.05-x86_64_arm-eabi/bin/arm-eabi- make O=build_rpi3 env
+	CROSS_COMPILE=`pwd`/gcc-linaro-7.3.1-2018.05-x86_64_aarch64-elf/bin/aarch64-elf- make O=build_rpi3 rpi_3_defconfig
+	CROSS_COMPILE=`pwd`/gcc-linaro-7.3.1-2018.05-x86_64_aarch64-elf/bin/aarch64-elf- make O=build_rpi3 -j
+	CROSS_COMPILE=`pwd`/gcc-linaro-7.3.1-2018.05-x86_64_aarch64-elf/bin/aarch64-elf- make O=build_rpi3 env
 elif [ "$1" == '2' ]
 then
 	#Raspberry Pi 2 config
@@ -83,10 +94,11 @@ then
 else
 	mountpoint=$3
 fi
+
 mkdir -p $mountpoint
 
 #Check if mac address was set, otherwise take the default one
-if [ -z "$4"];
+if [ -z "$4" ];
 then
 	mac="02:03:02:00:00:";
 else
@@ -94,7 +106,7 @@ else
 fi
 
 #Check if start parameter is set, otherwise set it do default 1
-if [ -z "$5"];
+if [ -z "$5" ];
 then
 	startvariable=1;
 else
@@ -102,7 +114,7 @@ else
 fi
 
 #Check if end parameter is set, otherwise set it do default 20
-if [ -z "$6"];
+if [ -z "$6" ];
 then
 	endvariable=20;
 else
@@ -119,12 +131,12 @@ do
 	sed -i "s/^ethaddr=.*/ethaddr=$mac$i/"  uboot.env.txt
 
 	# create uboot.env
-	./u-boot/build_rpi2/tools/mkenvimage -s 16384 -o uboot.env uboot.env.txt
+	./u-boot/build_rpi$1/tools/mkenvimage -s 16384 -o uboot.env uboot.env.txt
 
 	# format sd card
 	sudo umount $2
 	echo -en "o\nn\np\n\n\n\nt\nb\nw\nq\n" | sudo fdisk $2
-	sudo mkfs.fat -n GENODE_RPI2 $2
+	sudo mkfs.fat -n GENODE_RPI$1 $2
 
 	# mount sd card and copy files
 	sudo mount $2 $mountpoint
