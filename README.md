@@ -9,5 +9,18 @@ of every u-boot image deployed.
 Please have a look at the script before running it. Device path and raspberry pi version are mandatory.
 Others can be left blank. Initial values are shown below.
 
-							Raspberry Pi Version		Device		Mountpoint		MAC				Start	End
-Usage: ./create_sd_card.sh 	2							/dev/sdb1	/tmp/sdcard 	00:03:02:00:00: 	1		20
+Values are:
+
+$1 Raspberry Pi Version
+
+$2 Device
+
+$3 Mountpoint
+
+$4 MAC prefix
+
+$5 Start of MAC loop
+
+$6 End of MAC loop
+
+Usage: `./create_sd_card.sh 2 /dev/sdb1 /tmp/sdcard 00:03:02:00:00: 1 20`
