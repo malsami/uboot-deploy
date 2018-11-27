@@ -125,10 +125,11 @@ cd ..
 for i in $(seq $startvariable $endvariable);
 do
 	# create hex from dec
-	i=$(printf "%02X\n" $i)
+	k=$(printf "%02X\n" $i)
 
 	# adapt mac address
-	sed -i "s/^ethaddr=.*/ethaddr=$mac$i/"  uboot.env.txt
+	sed -i "s/^ethaddr=.*/ethaddr=$mac$k/"  uboot.env.txt
+	echo -e "Deploying $mac$k"
 
 	# create uboot.env
 	./u-boot/build_rpi$1/tools/mkenvimage -s 16384 -o uboot.env uboot.env.txt
@@ -147,7 +148,13 @@ do
 	# umount and sync
 	sudo umount $mountpoint
 	sync
-
-	read -p "Switch SD card and press enter to continue"
+	left=`expr $endvariable - $i`
+	echo -e "\e[32m Deployed SD Card $i only $left left \e[0m"
+	if [ $left != 0 ]
+	then
+		read -p "Switch SD card and press enter to continue"
+	else
+		echo -e "\e[32m We are done. Flashed `expr $endvariable - $startvariable` SD-Cards!\e[0m"
+	fi
 done
 
