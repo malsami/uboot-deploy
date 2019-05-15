@@ -52,10 +52,10 @@ cd u-boot
 #get the latest version from https://releases.linaro.org/components/toolchain/binaries/
 echo -e "\e[35m... Please ensure you are using the latest linaro toolchain for CROSS_COMPILE ...\e[0m"
 
-#Downloading Toolchain for 32 bit RPi2
+#Downloading Toolchain for ARM 32 bit
 wget https://releases.linaro.org/components/toolchain/binaries/latest-7/arm-eabi/gcc-linaro-7.3.1-2018.05-x86_64_arm-eabi.tar.xz
 tar xf gcc-linaro-7.3.1-2018.05-x86_64_arm-eabi.tar.xz
-#Downloading Toolchain for 64 bit RPi3
+#Downloading Toolchain for ARM 64 bit
 wget https://releases.linaro.org/components/toolchain/binaries/latest-7/aarch64-elf/gcc-linaro-7.3.1-2018.05-x86_64_aarch64-elf.tar.xz
 tar xf gcc-linaro-7.3.1-2018.05-x86_64_aarch64-elf.tar.xz
 
@@ -71,9 +71,9 @@ git checkout v2018.11
 if [ "$1" == '3' ]
 then
 	#Raspberry Pi 3 config
-	CROSS_COMPILE=`pwd`/gcc-linaro-7.3.1-2018.05-x86_64_aarch64-elf/bin/aarch64-elf- make O=build_rpi3 rpi_3_32b_defconfig
-	CROSS_COMPILE=`pwd`/gcc-linaro-7.3.1-2018.05-x86_64_aarch64-elf/bin/aarch64-elf- make O=build_rpi3 -j
-	CROSS_COMPILE=`pwd`/gcc-linaro-7.3.1-2018.05-x86_64_aarch64-elf/bin/aarch64-elf- make O=build_rpi3 env
+	CROSS_COMPILE=`pwd`/gcc-linaro-7.3.1-2018.05-x86_64_arm-eabi/bin/arm-eabi- make O=build_rpi3 rpi_3_32b_defconfig
+	CROSS_COMPILE=`pwd`/gcc-linaro-7.3.1-2018.05-x86_64_arm-eabi/bin/arm-eabi- make O=build_rpi3 -j
+	CROSS_COMPILE=`pwd`/gcc-linaro-7.3.1-2018.05-x86_64_arm-eabi/bin/arm-eabi- make O=build_rpi3 env
 elif [ "$1" == '2' ]
 then
 	#Raspberry Pi 2 config
