@@ -71,7 +71,7 @@ git checkout v2018.11
 if [ "$1" == '3' ]
 then
 	#Raspberry Pi 3 config
-	CROSS_COMPILE=`pwd`/gcc-linaro-7.3.1-2018.05-x86_64_aarch64-elf/bin/aarch64-elf- make O=build_rpi3 rpi_3_defconfig
+	CROSS_COMPILE=`pwd`/gcc-linaro-7.3.1-2018.05-x86_64_aarch64-elf/bin/aarch64-elf- make O=build_rpi3 rpi_3_32b_defconfig
 	CROSS_COMPILE=`pwd`/gcc-linaro-7.3.1-2018.05-x86_64_aarch64-elf/bin/aarch64-elf- make O=build_rpi3 -j
 	CROSS_COMPILE=`pwd`/gcc-linaro-7.3.1-2018.05-x86_64_aarch64-elf/bin/aarch64-elf- make O=build_rpi3 env
 elif [ "$1" == '2' ]
